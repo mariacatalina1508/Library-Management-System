@@ -32,6 +32,14 @@ public class CustomerServiceImpl implements CustomerService {
         return objectMapper.convertValue(customerEntityResponse, ResponseCustomerDTO.class);
     }
 
+    @Override
+    public void deleteCustomerById(Long id) {
+        customerRepository.findById(id).orElseThrow(() -> new CustomerDeleteException("Customer with id " + id + " not found"));
+
+        customerRepository.deleteById(id);
+        log.info("Customer with id {} was deleted", id);
+    }
+
     private void validateEmailAddress(RequestCustomerDTO requestCustomerDTO) {
         Customer customer = customerRepository.findByEmail(requestCustomerDTO.getEmail());
         if (customer != null) {
