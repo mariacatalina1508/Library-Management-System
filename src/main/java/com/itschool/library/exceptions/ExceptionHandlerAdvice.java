@@ -22,14 +22,18 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<String> bookNotFoundException(BookNotFoundException bookNotFoundException) {
-        return new ResponseEntity<>(objectToString(Map.of("message", bookNotFoundException.getMessage())), BAD_REQUEST);
+        return new ResponseEntity<>(objectToString(Map.of("message", bookNotFoundException.getMessage())), NOT_FOUND);
     }
 
-    @ExceptionHandler(CustomerDeleteException.class)
-    public ResponseEntity<String> bookNotFoundException(CustomerDeleteException customerDeleteException) {
-        return new ResponseEntity<>(objectToString(Map.of("message", customerDeleteException.getMessage())), NOT_FOUND);
+    @ExceptionHandler(CustomerDuplicateEmailException.class)
+    public ResponseEntity<String> customerDuplicateEmailException(CustomerDuplicateEmailException customerDuplicateEmailException) {
+        return new ResponseEntity<>(objectToString(Map.of("message", customerDuplicateEmailException.getMessage())), BAD_REQUEST);
     }
 
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<String> customerDeleteException(CustomerNotFoundException customerNotFoundException) {
+        return new ResponseEntity<>(objectToString(Map.of("message", customerNotFoundException.getMessage())), NOT_FOUND);
+    }
 
     private String objectToString(Object response) {
         try {

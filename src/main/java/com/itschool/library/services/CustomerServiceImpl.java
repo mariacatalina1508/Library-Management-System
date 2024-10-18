@@ -2,6 +2,7 @@ package com.itschool.library.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itschool.library.exceptions.CustomerDuplicateEmailException;
+import com.itschool.library.exceptions.CustomerNotFoundException;
 import com.itschool.library.models.dtos.RequestCustomerDTO;
 import com.itschool.library.models.dtos.ResponseCustomerDTO;
 import com.itschool.library.models.entities.Customer;
@@ -34,8 +35,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomerById(Long id) {
-        customerRepository.findById(id).orElseThrow(() -> new CustomerDeleteException("Customer with id " + id + " not found"));
+        //find if customer to be deleted is present in the database
+        customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException("Customer with id " + id + " not found"));
 
+        //proceed with deleting customer by given id
         customerRepository.deleteById(id);
         log.info("Customer with id {} was deleted", id);
     }
