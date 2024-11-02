@@ -4,8 +4,11 @@ import com.itschool.library.models.dtos.CopiesAvailableDTO;
 import com.itschool.library.models.dtos.RequestBookDTO;
 import com.itschool.library.models.dtos.ResponseBookDTO;
 import com.itschool.library.services.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RequestMapping("/api/books")
@@ -19,7 +22,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseBookDTO> createBook(@RequestBody RequestBookDTO requestBookDTO) {
+    public ResponseEntity<ResponseBookDTO> createBook(@Valid @RequestBody RequestBookDTO requestBookDTO) {
         return ResponseEntity.ok(bookService.createBook(requestBookDTO));
     }
 
@@ -28,6 +31,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.updateBookCopies(id, copiesAvailable.getCopiesAvailable()));
     }
 
+    @Operation(summary = "Get all filtered books by title, author and genre")
     @GetMapping
     public ResponseEntity<List<ResponseBookDTO>> getBooks(
             @RequestParam(value = "title", required = false) String title,
